@@ -4,6 +4,8 @@ from db import models
 from schemas import schemas
 
 
+photos_directory = "./photos/"
+
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
@@ -30,7 +32,7 @@ def get_photos(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_user_photo(db: Session, photo: schemas.PhotoCreate, user_id: int):
-    db_item = models.Item(**photo.model_dump(), owner_id=user_id)
+    db_item = models.Photo(**photo.dict(), owner_id=user_id, url=photos_directory+photo.name)
     db.add(db_item)
     db.commit()
     db.refresh(db_item)
