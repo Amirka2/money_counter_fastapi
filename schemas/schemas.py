@@ -4,12 +4,11 @@ from pydantic import BaseModel
 
 class PhotoBase(BaseModel):
     name: str
-    isDetectionCorrect: Optional[bool]
+    is_detection_correct: Optional[bool]
 
 
 class PhotoCreate(PhotoBase):
-    name: str
-    isDetectionCorrect: Optional[bool]
+    pass
 
 
 class Photo(BaseModel):
@@ -17,7 +16,7 @@ class Photo(BaseModel):
     owner_id: int
     name: str
     url: str
-    isDetectionCorrect: Optional[bool]
+    is_detection_correct: Optional[bool]
 
     class Config:
         orm_mode = True
@@ -41,7 +40,7 @@ class User(BaseModel):
     last_name: str
     username: str
     hash: str
-    isAdmin: Optional[bool]
+    is_admin: Optional[bool]
     photos: Optional[list[Photo]] = []
 
     class Config:
