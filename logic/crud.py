@@ -30,8 +30,8 @@ def get_photos(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_user_photo(db: Session, photo: schemas.PhotoCreate, user_id: int):
-    db_photo = models.Item(**photo.model_dump(), owner_id=user_id)
-    db.add(db_photo)
+    db_item = models.Item(**photo.model_dump(), owner_id=user_id)
+    db.add(db_item)
     db.commit()
-    db.refresh(db_photo)
-    return db_photo
+    db.refresh(db_item)
+    return db_item

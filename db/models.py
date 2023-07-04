@@ -14,7 +14,7 @@ class User(Base):
     username = Column(String)
     hash = Column(String)
 
-    photos = relationship("Photo", back_populates="owner")
+    # photos = relationship("Photo", back_populates="owner")
 
 
 class Photo(Base):

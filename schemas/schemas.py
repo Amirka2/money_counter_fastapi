@@ -2,16 +2,20 @@ from pydantic import BaseModel
 
 
 class PhotoBase(BaseModel):
+    owner_id: int
     name: str
     url: str
     isDetectionCorrect: bool
 
 
 class PhotoCreate(PhotoBase):
-    pass
+    owner_id: int
+    name: str
+    url: str
+    isDetectionCorrect: bool
 
 
-class Photo(PhotoBase):
+class Photo(BaseModel):
     id: int
     owner_id: int
     name: str
@@ -27,6 +31,7 @@ class UserBase(BaseModel):
     first_name: str
     last_name: str
     username: str
+    hash = str
 
 
 class UserCreate(UserBase):
@@ -37,7 +42,7 @@ class UserCreate(UserBase):
     hash = str
 
 
-class User(UserBase):
+class User(BaseModel):
     id: int
     tg_id = int
     first_name = str
