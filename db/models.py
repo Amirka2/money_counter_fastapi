@@ -1,5 +1,7 @@
 from sqlalchemy import create_engine, Boolean
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
+
 from main import Base
 
 
@@ -13,6 +15,8 @@ class User(Base):
     username = Column(String)
     hash = Column(String)
 
+    items = relationship("Photo", back_populates="owner")
+
 
 class Photo(Base):
     __tablename__ = "photos"
@@ -22,5 +26,6 @@ class Photo(Base):
     url = Column(String, unique=True)
     isDetectionCorrect = Column(Boolean)
 
+    owner = relationship("User", back_populates="items")
 
 
