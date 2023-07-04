@@ -30,7 +30,11 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
-    hash: str
+    tg_id = int
+    first_name = str
+    last_name = str
+    username = str
+    hash = str
 
 
 class User(UserBase):

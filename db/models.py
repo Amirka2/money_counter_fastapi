@@ -1,5 +1,4 @@
-from sqlalchemy import create_engine, Boolean
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.orm import relationship
 
 from main import Base

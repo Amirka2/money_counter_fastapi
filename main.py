@@ -1,8 +1,12 @@
-from fastapi import FastAPI, APIRouter
-from sqlalchemy import create_engine, Column, Integer, String, Boolean
+from fastapi import FastAPI
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from db.models import *
+from sqlalchemy import create_engine
+
+from endpoints.photos import router as photos_router
+from endpoints.users import router as users_router
+
+
 tags_metadata = [
     {
         "name": "Users",
@@ -19,39 +23,16 @@ engine = create_engine(
         SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
     )
 
-
-def get_session():
-    session_local = sessionmaker(autoflush=False, bind=engine)
-    return session_local
-
-
+SessionLocal = sessionmaker(autoflush=False, bind=engine)
 Base = declarative_base()
-
-
 Base.metadata.create_all(bind=engine)
 
-
 app = FastAPI(openapi_tags=tags_metadata)
+app.include_router(users_router, tags=['Users'])
+app.include_router(photos_router, tags=['Photos'])
 
 
 @app.get("/")
 async def get_main_page():
     return "I fucked python"
 
-
-@app.get("/users/", tags=["Users"])
-async def get_users():
-    db = get_session()
-
-    return db.query(User).all()
-
-
-@app.post("/users/", tags=['Users'])
-async def add_user(tg_id: int, first_name: str,
-                   last_name: str, username: str, hash: str):
-    db = get_session()
-    user = User(tg_id, first_name, last_name, username, hash)
-    db.add(user)
-    db.commit()
-
-    return user
