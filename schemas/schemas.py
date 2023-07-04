@@ -41,6 +41,7 @@ class User(BaseModel):
     last_name: str
     username: str
     hash: str
+    isAdmin: Optional[bool]
     photos: Optional[list[Photo]] = []
 
     class Config:
