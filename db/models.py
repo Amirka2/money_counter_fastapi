@@ -1,7 +1,26 @@
-from sqlalchemy import Column, Integer, String, Boolean
-from sqlalchemy.orm import relationship
+from typing import List, Optional
 
-from main import Base
+from sqlalchemy import Column, Integer, String, Boolean, create_engine, ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship, sessionmaker, Relationship
+
+SQLALCHEMY_DATABASE_URL = "sqlite:///./db/sql_app.db"
+engine = create_engine(
+        SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
+    )
+
+SessionLocal = sessionmaker(autoflush=False, bind=engine)
+Base = declarative_base()
+Base.metadata.create_all(bind=engine)
+
+
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 class User(Base):
@@ -14,7 +33,7 @@ class User(Base):
     username = Column(String)
     hash = Column(String)
 
-    # photos = relationship("Photo", back_populates="owner")
+    photos = relationship("Photo", back_populates="owner")
 
 
 class Photo(Base):
@@ -24,7 +43,8 @@ class Photo(Base):
     name = Column(String, unique=True)
     url = Column(String, unique=True)
     isDetectionCorrect = Column(Boolean)
+    owner_id = Column(Integer, ForeignKey("users.id"))
 
-    owner_id = relationship("User", back_populates="items")
+    owner = relationship("User", back_populates="photos")
 
 

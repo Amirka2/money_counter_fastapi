@@ -6,6 +6,7 @@ from sqlalchemy import create_engine
 from fastapi import Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from db.models import get_db
 # from db.sessions import get_db
 # from main import engine
 from logic import crud
@@ -29,24 +30,6 @@ tags_metadata = [
         "description": "Operations with users. The **login** logic is also here.",
     }
 ]
-
-SQLALCHEMY_DATABASE_URL = "sqlite:///./db/sql_app.db"
-engine = create_engine(
-        SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
-    )
-
-SessionLocal = sessionmaker(autoflush=False, bind=engine)
-Base = declarative_base()
-Base.metadata.create_all(bind=engine)
-
-
-# Dependency
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 # app.include_router(users_router, tags=['Users'])
