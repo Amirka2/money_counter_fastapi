@@ -4,16 +4,12 @@ from pydantic import BaseModel
 
 
 class PhotoBase(BaseModel):
-    owner_id: int
     name: str
-    url: str
     isDetectionCorrect: Optional[bool]
 
 
 class PhotoCreate(PhotoBase):
-    owner_id: int
     name: str
-    url: str
     isDetectionCorrect: Optional[bool]
 
 
