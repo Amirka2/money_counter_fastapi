@@ -15,7 +15,7 @@ class User(Base):
     username = Column(String)
     hash = Column(String)
 
-    items = relationship("Photo", back_populates="owner")
+    photos = relationship("Photo", back_populates="owner")
 
 
 class Photo(Base):
@@ -26,6 +26,6 @@ class Photo(Base):
     url = Column(String, unique=True)
     isDetectionCorrect = Column(Boolean)
 
-    owner = relationship("User", back_populates="items")
+    owner_id = relationship("User", back_populates="items")
 
 
