@@ -27,11 +27,12 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
-    tg_id = Column(Integer)
-    first_name = Column(String)
-    last_name = Column(String)
-    username = Column(String)
-    hash = Column(String)
+    tg_id = Column(Integer, nullable=False)
+    first_name = Column(String, nullable=False)
+    last_name = Column(String, nullable=False)
+    username = Column(String, nullable=False)
+    hash = Column(String, nullable=False)
+    is_admin = Column(String)
 
     photos = relationship("Photo", back_populates="owner")
 
@@ -40,9 +41,9 @@ class Photo(Base):
     __tablename__ = "photos"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, unique=True)
-    url = Column(String, unique=True)
-    isDetectionCorrect = Column(Boolean)
+    name = Column(String, unique=True, nullable=False)
+    url = Column(String, unique=True, nullable=False)
+    is_detection_correct = Column(Boolean)
     owner_id = Column(Integer, ForeignKey("users.id"))
 
     owner = relationship("User", back_populates="photos")
