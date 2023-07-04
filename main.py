@@ -60,7 +60,6 @@ def read_photos(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     return photos
 
 
-
 app = FastAPI(openapi_tags=tags_metadata)
 app.include_router(users_router)
 app.include_router(photos_router)
