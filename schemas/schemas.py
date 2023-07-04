@@ -1,5 +1,4 @@
 from typing import Optional
-
 from pydantic import BaseModel
 
 
@@ -33,11 +32,7 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
-    tg_id: int
-    first_name: str
-    last_name: str
-    username: str
-    hash: str
+    pass
 
 
 class User(BaseModel):
