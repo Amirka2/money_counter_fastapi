@@ -1,23 +1,12 @@
 import uvicorn
-from fastapi import FastAPI, APIRouter
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
-from fastapi import Depends, HTTPException
+from fastapi import FastAPI,Depends, HTTPException
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 
 from db.models import get_db
-# from db.sessions import get_db
-# from main import engine
 from logic import crud
-# from db import models
 from schemas import schemas
 from fastapi import APIRouter
-
-from db import models
-
-# from endpoints.photos import router as photos_router
-# from endpoints.users import router as users_router
 
 
 tags_metadata = [
@@ -32,14 +21,8 @@ tags_metadata = [
 ]
 
 
-# app.include_router(users_router, tags=['Users'])
-# app.include_router(photos_router, tags=['Photos'])
-
-
 users_router = APIRouter(prefix='/users', tags=['Users'])
 photos_router = APIRouter(prefix='/photos', tags=['Photos'])
-
-# models.Base.metadata.create_all(bind=engine)
 
 
 @users_router.post("/", response_model=schemas.User)
@@ -80,6 +63,7 @@ def read_items(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
 app = FastAPI(openapi_tags=tags_metadata)
 app.include_router(users_router)
 app.include_router(photos_router)
+app.mount("/", StaticFiles(directory="static", html=True), name="static")
 
 
 if __name__ == '__main__':
