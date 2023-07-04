@@ -47,7 +47,7 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 
 
-@users_router.post("/users/{user_id}/photos/", response_model=schemas.Photo)
+@users_router.post("/{user_id}/photos/", response_model=schemas.Photo)
 def create_item_for_user(
     user_id: int, photo: schemas.PhotoCreate, db: Session = Depends(get_db)
 ):
