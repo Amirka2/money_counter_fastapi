@@ -48,16 +48,17 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
 
 
 @users_router.post("/{user_id}/photos/", response_model=schemas.Photo)
-def create_item_for_user(
+def create_photo_for_user(
     user_id: int, photo: schemas.PhotoCreate, db: Session = Depends(get_db)
 ):
     return crud.create_user_photo(db=db, photo=photo, user_id=user_id)
 
 
 @photos_router.get("/", response_model=list[schemas.Photo])
-def read_items(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+def read_photos(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     photos = crud.get_photos(db, skip=skip, limit=limit)
     return photos
+
 
 
 app = FastAPI(openapi_tags=tags_metadata)
