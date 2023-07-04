@@ -2,8 +2,7 @@ from fastapi import FastAPI, APIRouter
 from sqlalchemy import create_engine, Column, Integer, String, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm.session import query
-
+from db.models import *
 tags_metadata = [
     {
         "name": "Users",
@@ -27,8 +26,6 @@ def get_session():
 
 
 Base = declarative_base()
-
-
 
 
 Base.metadata.create_all(bind=engine)
