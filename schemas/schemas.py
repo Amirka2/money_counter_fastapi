@@ -43,6 +43,7 @@ class UserBase(BaseModel):
     last_name: str
     username: str
     hash: str
+    tokens_value: int = 10
 
 
 class UserCreate(UserBase):
@@ -56,8 +57,10 @@ class User(BaseModel):
     last_name: str
     username: str
     hash: str
+    tokens_value: int = 10
     is_admin: Optional[bool]
     photos: Optional[list[Photo]] = []
+    detected_photos: Optional[list[Photo]] = []
 
     class Config:
         orm_mode = True
