@@ -27,11 +27,11 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 
-def change_tokens_value(db: Session, user_db: schemas.User):
-    db.add(user_db)
+def change_tokens_value(db: Session, user: schemas.User):
+    db.add(user)
     db.commit()
-    db.refresh(user_db)
-    return user_db
+    db.refresh(user)
+    return user
 
 
 def get_photos(db: Session, skip: int = 0, limit: int = 100):
