@@ -39,7 +39,7 @@ async def create_photo_for_user(
 ):
     if file.content_type != 'image/png':
         raise HTTPException(status_code=404, detail="Filetype is incorrect")
-    current_time = datetime.datetime.now().strftime("%Y_%m_%d-%H:%M:%S")
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
     file_path = f"photos/{current_time}_{file.filename}"
     with open(file_path, "wb") as f:
         f.write(await file.read())
