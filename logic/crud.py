@@ -27,7 +27,7 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 
-def change_tokens_value(db: Session, user: schemas.User):
+def change_user_info(db: Session, user: schemas.User):
     db.add(user)
     db.commit()
     db.refresh(user)
