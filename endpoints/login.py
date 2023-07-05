@@ -2,7 +2,6 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from fastapi.responses import JSONResponse
 
-
 from db.models import get_db
 from schemas import schemas
 from logic import crud
