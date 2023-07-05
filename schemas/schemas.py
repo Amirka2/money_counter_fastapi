@@ -5,6 +5,7 @@ from pydantic import BaseModel
 class PhotoBase(BaseModel):
     name: str
     is_detection_correct: Optional[bool]
+    is_favorite: bool
 
 
 class PhotoCreate(PhotoBase):
@@ -17,12 +18,26 @@ class Photo(BaseModel):
     name: str
     url: str
     is_detection_correct: Optional[bool]
+    is_favorite: bool
+
+    class Config:
+        orm_mode = True
+
+
+class DetectedPhoto(BaseModel):
+    id: int
+    owner_id: int
+    name: str
+    url: str
+    is_detection_correct: Optional[bool]
+    is_favorite: bool
 
     class Config:
         orm_mode = True
 
 
 class UserBase(BaseModel):
+    id: int
     tg_id: int
     first_name: str
     last_name: str
@@ -35,6 +50,7 @@ class UserCreate(UserBase):
 
 
 class User(BaseModel):
+    id: int
     tg_id: int
     first_name: str
     last_name: str
