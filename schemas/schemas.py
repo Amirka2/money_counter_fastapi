@@ -37,7 +37,6 @@ class DetectedPhoto(BaseModel):
 
 
 class UserBase(BaseModel):
-    id: int
     tg_id: int
     first_name: str
     last_name: str
