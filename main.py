@@ -1,6 +1,7 @@
 import uvicorn
-from fastapi import FastAPI,Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Response
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 from db.models import get_db
@@ -23,6 +24,7 @@ tags_metadata = [
 
 users_router = APIRouter(prefix='/users', tags=['Users'])
 photos_router = APIRouter(prefix='/photos', tags=['Photos'])
+login_router = APIRouter(prefix='/login', tags=['Login'])
 
 
 @users_router.post("/", response_model=schemas.User)
@@ -60,9 +62,23 @@ def read_photos(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     return photos
 
 
+@login_router.post("/")
+def log_in(user: schemas.User, db: Session = Depends(get_db)):
+    db_user = crud.get_user_by_username(db, username=user.username)
+    response = JSONResponse(content={"message": "куки установлены"})
+    if db_user is None:
+        user = crud.create_user(user, db)
+    else:
+        user = db_user
+
+    response.set_cookie(key="user_id", value=user.id)
+    return response
+
+
 app = FastAPI(openapi_tags=tags_metadata)
 app.include_router(users_router)
 app.include_router(photos_router)
+app.include_router(login_router)
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
 
 
