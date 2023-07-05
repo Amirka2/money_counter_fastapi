@@ -44,8 +44,21 @@ class Photo(Base):
     name = Column(String, unique=True, nullable=False)
     url = Column(String, unique=True, nullable=False)
     is_detection_correct = Column(Boolean)
+    is_favorite = Column(Boolean)
     owner_id = Column(Integer, ForeignKey("users.id"))
 
     owner = relationship("User", back_populates="photos")
 
+
+class DetectedPhoto(Base):
+    __tablename__ = "detected_photos"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, unique=True, nullable=False)
+    url = Column(String, unique=True, nullable=False)
+    is_detection_correct = Column(Boolean)
+    is_favorite = Column(Boolean)
+    owner_id = Column(Integer, ForeignKey("users.id"))
+
+    owner = relationship("User", back_populates="photos")
 
