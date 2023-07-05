@@ -1,5 +1,5 @@
-from typing import Optional
-from pydantic import BaseModel, json
+from typing import Optional, Any
+from pydantic import BaseModel, Json
 
 
 class PhotoBase(BaseModel):
@@ -69,7 +69,7 @@ class History(BaseModel):
     id: int
     owner_id: int
     sum: float = 0
-    messages: json
+    messages: Json = [Any]
 
     class Config:
         orm_mode = True
