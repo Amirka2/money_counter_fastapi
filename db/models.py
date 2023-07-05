@@ -32,9 +32,11 @@ class User(Base):
     last_name = Column(String, nullable=False)
     username = Column(String, nullable=False)
     hash = Column(String, nullable=False)
+    tokens_value = Column(Integer, default=10, nullable=False)
     is_admin = Column(String)
 
     photos = relationship("Photo", back_populates="owner")
+    detected_photos = relationship("DetectedPhoto", back_populates="owner")
 
 
 class Photo(Base):
@@ -60,5 +62,5 @@ class DetectedPhoto(Base):
     is_favorite = Column(Boolean)
     owner_id = Column(Integer, ForeignKey("users.id"))
 
-    owner = relationship("User", back_populates="photos")
+    owner = relationship("User", back_populates="detected_photos")
 
