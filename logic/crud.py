@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from db import models
@@ -27,10 +28,11 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 
-def change_tokens_value(db: Session, user_id: int, tokens_value: int):
-    user_db = db.query(models.User).filter(models.User.id == user_id).first()
-    user = models.User(**user_db.dict(), tokens_value=tokens_value)
-    user_db = models.User(user)
+def change_tokens_value(db: Session, user: schemas.User):
+    user_db = db.query(models.User).filter(models.User.id == user.id).first()
+    if not user_db:
+        raise HTTPException(status_code=404, detail="User not found")
+    user_db = models.User(**user.dict())
     db.add(user_db)
     db.commit()
     db.refresh(user_db)

@@ -84,7 +84,9 @@ def read_photos(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
 
 @admin_router.patch("/tokens/{user_id}", response_model=schemas.User)
 def change_tokens_value(user_id: int, tokens_value: int, db: Session = Depends(get_db)):
-    return crud.change_tokens_value(db, user_id, tokens_value)
+    user = crud.get_user(db, user_id)
+    user.tokens_value = tokens_value
+    return crud.change_tokens_value(db, user)
 
 
 app = FastAPI(openapi_tags=tags_metadata)
