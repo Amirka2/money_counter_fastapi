@@ -27,6 +27,16 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 
+def change_tokens_value(db: Session, user_id: int, tokens_value: int):
+    user_db = db.query(models.User).filter(models.User.id == user_id).first()
+    user = models.User(**user_db.dict(), tokens_value=tokens_value)
+    user_db = models.User(user)
+    db.add(user_db)
+    db.commit()
+    db.refresh(user_db)
+    return user_db
+
+
 def get_photos(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Photo).offset(skip).limit(limit).all()
 

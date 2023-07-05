@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI, Depends, HTTPException, Response
+from fastapi import FastAPI, Depends, HTTPException, Cookie
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
@@ -13,18 +13,38 @@ from fastapi import APIRouter
 tags_metadata = [
     {
         "name": "Users",
-        "description": "Operations with users. The **login** logic is also here.",
+        "description": "Operations with users.",
     },
     {
         "name": "Photos",
-        "description": "Operations with users. The **login** logic is also here.",
+        "description": "Operations with users.",
+    },
+    {
+        "name": "Login",
+    },
+    {
+        "name": "Admin",
+        "description": "Operations for admins",
     }
 ]
 
-
+login_router = APIRouter(prefix='/login', tags=['Login'])
 users_router = APIRouter(prefix='/users', tags=['Users'])
 photos_router = APIRouter(prefix='/photos', tags=['Photos'])
-login_router = APIRouter(prefix='/login', tags=['Login'])
+admin_router = APIRouter(prefix='/admin', tags=['Admin'])
+
+
+@login_router.post("/")
+def log_in(user: schemas.User, db: Session = Depends(get_db)):
+    db_user = crud.get_user_by_username(db, username=user.username)
+    response = JSONResponse(content={"message": "куки установлены"})
+    if db_user is None:
+        user = crud.create_user(user, db)
+    else:
+        user = db_user
+
+    response.set_cookie(key="user_id", value=user.id)
+    return response
 
 
 @users_router.post("/", response_model=schemas.User)
@@ -62,23 +82,16 @@ def read_photos(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     return photos
 
 
-@login_router.post("/")
-def log_in(user: schemas.User, db: Session = Depends(get_db)):
-    db_user = crud.get_user_by_username(db, username=user.username)
-    response = JSONResponse(content={"message": "куки установлены"})
-    if db_user is None:
-        user = crud.create_user(user, db)
-    else:
-        user = db_user
-
-    response.set_cookie(key="user_id", value=user.id)
-    return response
+@admin_router.patch("/tokens/{user_id}", response_model=schemas.User)
+def change_tokens_value(user_id: int, tokens_value: int, db: Session = Depends(get_db)):
+    return crud.change_tokens_value(db, user_id, tokens_value)
 
 
 app = FastAPI(openapi_tags=tags_metadata)
 app.include_router(users_router)
 app.include_router(photos_router)
 app.include_router(login_router)
+app.include_router(admin_router)
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
 
 
