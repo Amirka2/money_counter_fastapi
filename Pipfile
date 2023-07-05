@@ -8,6 +8,7 @@ sqlalchemy = "*"
 pydantic = "*"
 fastapi = "*"
 alembic = "*"
+python-multipart = "*"
 
 [dev-packages]
 

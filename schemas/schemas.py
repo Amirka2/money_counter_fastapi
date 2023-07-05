@@ -4,7 +4,7 @@ from pydantic import BaseModel, Json
 
 class PhotoBase(BaseModel):
     name: str
-    is_detection_correct: Optional[bool]
+    url: str
     is_favorite: bool
 
 

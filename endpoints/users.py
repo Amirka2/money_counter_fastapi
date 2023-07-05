@@ -1,4 +1,6 @@
-from fastapi import APIRouter, HTTPException, Depends
+import datetime
+
+from fastapi import APIRouter, HTTPException, Depends, UploadFile
 from sqlalchemy.orm import Session
 
 from db.models import get_db
@@ -32,7 +34,14 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
 
 
 @users_router.post("/{user_id}/photos/", response_model=schemas.Photo)
-def create_photo_for_user(
-    user_id: int, photo: schemas.PhotoCreate, db: Session = Depends(get_db)
+async def create_photo_for_user(
+    user_id: int, file: UploadFile, db: Session = Depends(get_db)
 ):
+    if file.content_type != 'image/png':
+        raise HTTPException(status_code=404, detail="Filetype is incorrect")
+    current_time = datetime.datetime.now().strftime("%Y_%m_%d-%H:%M:%S")
+    file_path = f"photos/{current_time}_{file.filename}"
+    with open(file_path, "wb") as f:
+        f.write(await file.read())
+    photo = schemas.PhotoCreate(name=file.filename, url=file_path, is_favorite=False)
     return crud.create_user_photo(db=db, photo=photo, user_id=user_id)
