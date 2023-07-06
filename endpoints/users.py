@@ -49,5 +49,5 @@ async def create_photo_for_user(
     photo = schemas.PhotoCreate(name=file_name, url=file_path, is_favorite=False)
     result_photo = crud.create_user_photo(db=db, photo=photo, user_id=user_id)
     res = detect_objects_on_image(file_path)
-    draw_rectangles(file_name, res[0][0], res[0][1], res[0][2], res[0][3])
-    return file_path
+    return draw_rectangles(file_name, res[0][0], res[0][1], res[0][2], res[0][3])
+

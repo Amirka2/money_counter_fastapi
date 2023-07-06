@@ -110,4 +110,5 @@ def draw_rectangles(photo_name, x, y, width, height):
     image = Image.open(unprocessed_photo_folder+photo_name)  # Открытие изображения
     draw = ImageDraw.Draw(image)
     draw.rectangle((x, y, width, height), outline=(255, 0, 0), width=5)
-    image.show()  # Отображение изображения с прямоугольником
+    image.save(processed_photo_folder + photo_name)
+    return processed_photo_folder + photo_name
