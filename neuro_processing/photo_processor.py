@@ -1,8 +1,6 @@
-import cv2
 import onnxruntime as ort
 from PIL import Image, ImageDraw
 import numpy as np
-import json
 # result.plot() - нарисовать квадраты
 
 

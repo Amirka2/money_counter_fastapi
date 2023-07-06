@@ -6,3 +6,4 @@ SQLAlchemy==2.0.18
 uvicorn==0.22.0
 
 onnxruntime~=1.15.1
+numpy~=1.25.0
