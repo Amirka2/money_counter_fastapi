@@ -1,5 +1,6 @@
+import cv2
 import onnxruntime as ort
-from PIL import Image
+from PIL import Image, ImageDraw
 import numpy as np
 import json
 # result.plot() - нарисовать квадраты
@@ -103,3 +104,10 @@ def process_output(output, img_width, img_height):
         result.append(boxes[0])
         boxes = [box for box in boxes if iou(box, boxes[0]) < 0.7]
     return result
+
+
+def draw_rectangles(photo_name, x, y, width, height):
+    image = Image.open(unprocessed_photo_folder+photo_name)  # Открытие изображения
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((x, y, width, height), outline=(255, 0, 0), width=5)
+    image.show()  # Отображение изображения с прямоугольником

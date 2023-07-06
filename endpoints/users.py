@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from db.models import get_db
 from schemas import schemas
 from logic import crud
-from neuro_processing.photo_processor import detect_objects_on_image
+from neuro_processing.photo_processor import detect_objects_on_image, draw_rectangles
 
 
 users_router = APIRouter(prefix='/users', tags=['Users'])
@@ -49,4 +49,5 @@ async def create_photo_for_user(
     photo = schemas.PhotoCreate(name=file_name, url=file_path, is_favorite=False)
     result_photo = crud.create_user_photo(db=db, photo=photo, user_id=user_id)
     res = detect_objects_on_image(file_path)
+    draw_rectangles(file_name, res[0][0], res[0][1], res[0][2], res[0][3])
     return file_path
