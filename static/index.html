@@ -40,8 +40,25 @@
   <!-- Copyright -->
 </footer>
     <script>
+        let user_id;
         let form = document.querySelector('.send-form')
-        form.action = '/users/1/photos/'
+        let key, value, i;
+        let cookieArray  = document.cookie.split(';');
+
+        for (i = 0; i < cookieArray.length; i++){
+            key = cookieArray[i].substr(0, cookieArray[i].indexOf("="));
+            value = cookieArray[i].substr(cookieArray[i].indexOf("=")+1);
+
+            if (key == 'email'){
+                alert('Email is ' + value);
+            }
+
+            if (key == 'user_id'){
+                user_id = value
+            }
+        }
+        console.log('/users/' + user_id + '/photos/')
+        form.action = '/users/' + user_id + '/photos/'
         form.method = 'POST'
 
     </script>
