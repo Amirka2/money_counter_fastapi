@@ -39,7 +39,7 @@ def get_photos(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_user_photo(db: Session, photo: schemas.PhotoCreate, user_id: int):
-    db_item = models.Photo(**photo.dict(), owner_id=user_id, url=photos_directory+photo.name)
+    db_item = models.Photo(**photo.dict(), owner_id=user_id)
     db.add(db_item)
     db.commit()
     db.refresh(db_item)

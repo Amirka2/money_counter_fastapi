@@ -1,11 +1,13 @@
 import datetime
 
 from fastapi import APIRouter, HTTPException, Depends, UploadFile
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
 from db.models import get_db
 from schemas import schemas
 from logic import crud
+from neuro_processing.photo_processor import process_photo, detect_items
 
 
 users_router = APIRouter(prefix='/users', tags=['Users'])
@@ -33,15 +35,18 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 
 
-@users_router.post("/{user_id}/photos/", response_model=schemas.Photo)
+@users_router.post("/{user_id}/photos/", response_class=FileResponse)
 async def create_photo_for_user(
     user_id: int, file: UploadFile, db: Session = Depends(get_db)
 ):
-    if file.content_type != 'image/png':
+    if not file.content_type.__contains__('image'):
         raise HTTPException(status_code=404, detail="Filetype is incorrect")
     current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
-    file_path = f"photos/{current_time}_{file.filename}"
+    file_name = f"{current_time}_{file.filename}"
+    file_path = f"photos/unprocessed/{file_name}"
     with open(file_path, "wb") as f:
         f.write(await file.read())
-    photo = schemas.PhotoCreate(name=file.filename, url=file_path, is_favorite=False)
-    return crud.create_user_photo(db=db, photo=photo, user_id=user_id)
+    photo = schemas.PhotoCreate(name=file_name, url=file_path, is_favorite=False)
+    result_photo = crud.create_user_photo(db=db, photo=photo, user_id=user_id)
+    detect_items(file.filename)
+    return file_path
