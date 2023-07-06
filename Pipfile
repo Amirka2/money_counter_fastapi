@@ -9,6 +9,9 @@ pydantic = "*"
 fastapi = "*"
 alembic = "*"
 python-multipart = "*"
+yolo = "*"
+torch = "*"
+ultralytics = "*"
 
 [dev-packages]
 
