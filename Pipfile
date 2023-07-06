@@ -12,6 +12,8 @@ python-multipart = "*"
 yolo = "*"
 torch = "*"
 ultralytics = "*"
+onnxruntime = "*"
+pillow = "*"
 
 [dev-packages]
 
