@@ -20,11 +20,13 @@
             <h1>Главная</h1>
         </div>
 
-        <FORM class="d-flex flex-column send-form" action="/users/1/photos/" method="POST" enctype="multipart/form-data">
-            <input type="file" class="form-control my-image-field" id="customFile" />
-            <button class="btn btn-primary" type="submit">Submit</button>
-        </FORM>
-
+        <form class="d-flex flex-column send-form"
+            enctype="multipart/form-data"
+            action="/users/1/photos/"
+            method="POST">
+            <input class="form-control my-image-field" type="FILE" name="file"/>
+            <input class="btn btn-primary" type="submit" name="Upload" value="Upload" />
+        </form>
 
     </div>
 
@@ -37,6 +39,12 @@
   </div>
   <!-- Copyright -->
 </footer>
+    <script>
+        let form = document.querySelector('.send-form')
+        form.action = '/users/1/photos/'
+        form.method = 'POST'
+
+    </script>
 <!--<script>-->
 <!--    let form = document.querySelector('.send-form')-->
 <!--    const compressImage = async (file, { quality = 1, type = file.type }) => {-->
