@@ -11,43 +11,35 @@
 <body>
     <div class="container">
         <header class="d-flex justify-content-center py-3">
-            <ul class="nav nav-pills">
-                <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Log in</a></li>
-            </ul>
+            <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-login="m0neyc0untbot" data-size="large" data-onauth="onTelegramAuth(user)" data-request-access="write"></script>
         </header>
     </div>
-    <h1>Главная</h1>
-    <p>Привет</p>
 
-    <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-login="m0neyc0untbot" data-size="large" data-onauth="onTelegramAuth(user)" data-request-access="write"></script>
-    <script type="text/javascript">
-      function onTelegramAuth(user) {
-        alert('Logged in as ' + user.first_name + ' ' + user.last_name + ' (' + user.id + (user.username ? ', @' + user.username : '') + ')');
-      }
-    </script>
-
-    <FORM action="/users/1/photos/" method="POST" enctype="multipart/form-data">
-        <input type="file" id="file" placeholder="upload a file"
-        name="file">
-        <button type="submit">Submit</button>
-    </FORM>
-
-
-    <div class="container">
-      <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-        <div class="col-md-4 d-flex align-items-center">
-          <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
-            <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
-          </a>
-          <span class="mb-3 mb-md-0 text-body-secondary">© 2023 Company, Inc</span>
+    <div class="d-flex flex-column justify-content-around align-items-center">
+        <div>
+            <h1>Главная</h1>
         </div>
 
-        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-          <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
-          <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
-          <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
-        </ul>
-      </footer>
+        <FORM class="d-flex flex-column" action="send_photo" method="POST" enctype="multipart/form-data">
+            <input type="file" class="form-control" id="customFile" />
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </FORM>
+
     </div>
+
+    <footer class="bg-light text-center text-lg-start fixed-bottom">
+  <!-- Copyright -->
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+    © 2023 Copyright: Money Counter
+      <br/>
+      Практика
+  </div>
+  <!-- Copyright -->
+</footer>
+<script>
+    let send_photo = function() {
+
+    }
+</script>
 </body>
 </html>
