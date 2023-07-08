@@ -33,7 +33,7 @@ class User(Base):
     username = Column(String, nullable=False)
     hash = Column(String, nullable=False)
     tokens_value = Column(Integer, default=10, nullable=False)
-    is_admin = Column(String)
+    is_admin = Column(Boolean)
     sum = Column(Float, default=0)
 
     photos = relationship("Photo", back_populates="owner")

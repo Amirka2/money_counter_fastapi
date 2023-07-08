@@ -2,12 +2,6 @@ from typing import Optional, Any
 from pydantic import BaseModel, Json
 
 
-class History(BaseModel):
-    owner_id: int
-    sum: float = 0
-    messages: list[str]
-
-
 class MessageCreate(BaseModel):
     owner_id: int
     message_text: str
@@ -76,11 +70,10 @@ class User(BaseModel):
     username: str
     hash: str
     tokens_value: int = 10
-    is_admin: Optional[bool]
+    is_admin: bool = False
     sum: float = 0
     photos: Optional[list[Photo]] = []
     detected_photos: Optional[list[Photo]] = []
-    messages: list[Message]
 
     class Config:
         orm_mode = True
