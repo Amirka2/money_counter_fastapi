@@ -34,11 +34,11 @@ class User(Base):
     hash = Column(String, nullable=False)
     tokens_value = Column(Integer, default=10, nullable=False)
     is_admin = Column(String)
-    sum = Column(Float, default=0, nullable=False)
+    sum = Column(Float, default=0)
 
     photos = relationship("Photo", back_populates="owner")
     detected_photos = relationship("DetectedPhoto", back_populates="owner")
-    messages = relationship("Messages", back_populates="owner")
+    messages = relationship("Message", back_populates="owner")
 
 
 class Photo(Base):
