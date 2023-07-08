@@ -12,9 +12,11 @@ from PIL import ImageFont
 # result.plot() - нарисовать квадраты
 
 
-model = ort.InferenceSession("neuro_processing/detector.onnx")
+model_detector = ort.InferenceSession("neuro_processing/detector.onnx")
+model_classifier = ort.InferenceSession("neuro_processing/detector.onnx")
 unprocessed_photo_folder = './photos/unprocessed/'
 processed_photo_folder = './photos/processed/'
+temp_photo_folder = './photos/temp'
 
 yolo_classes = [
     "10kop_coin", "50kop_coin", "1rub_coin", "2rub_coin", "5rub_coin",
@@ -22,6 +24,11 @@ yolo_classes = [
     "500rub_note", "1000rub_note", "2000rub_note", "5000rub_note",
     "backsite", "not_money"
 ]
+
+
+def classify_item(item_path: str):
+    res = model_classifier.predict(item_path)
+    return sum
 
 
 def detect_objects_on_image(buf):
@@ -42,7 +49,7 @@ def prepare_input(buf):
 
 
 def detect_items(photo_name: str):
-    results = model.predict(unprocessed_photo_folder+photo_name)
+    results = model_detector.predict(unprocessed_photo_folder + photo_name)
     result = results[0]
     output = []
     for box in result.boxes:
@@ -114,13 +121,21 @@ def process_output(output, img_width, img_height):
 def draw_rectangles(photo_name: str, coordinates_list: list):
     image = Image.open(unprocessed_photo_folder + photo_name)
     font = ImageFont.truetype('./Font/Karla-VariableFont_wght.ttf', 60)
+    i = 0
     for coords in coordinates_list:
+        image_copy = image.copy()
         x, y, width, height, value, precision = coords
         text = f"value: {value} \n precision: {round(precision, 3)}"
         draw = ImageDraw.Draw(image)
+        cropped = image_copy.crop((x, y, width, height))
+        item_path = f"{temp_photo_folder}/{i}/{photo_name}"
+        cropped.save(item_path, ".JPG")
+        sum = classify_item(item_path)
         draw.rectangle((x, y, width, height), outline=(255, 0, 0), width=5)
         draw.text((x, y, width, height), text=text, fill=None, font=font, anchor=None, spacing=0, align="left")
+        i += 1
 
     image.save(processed_photo_folder + photo_name)
 
     return processed_photo_folder + photo_name
+
