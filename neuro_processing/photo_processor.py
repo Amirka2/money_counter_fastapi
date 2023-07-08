@@ -9,11 +9,10 @@ unprocessed_photo_folder = './photos/unprocessed/'
 processed_photo_folder = './photos/processed/'
 
 yolo_classes = [
-    "10kop_coin", "50kop_coin", "", "", "",
-    "", "", "", ""
-, "", "", "", "",
-    "", "", "", "", ""
-, "", ""
+    "10kop_coin", "50kop_coin", "1rub_coin", "2rub_coin", "5rub_coin",
+    "5rub_note", "10rub_coin", "50rub_note", "100rub_note",
+    "500rub_note", "1000rub_note", "2000rub_note", "5000rub_note",
+    "backsite", "not_money"
 ]
 
 
@@ -104,9 +103,16 @@ def process_output(output, img_width, img_height):
     return result
 
 
-def draw_rectangles(photo_name, x, y, width, height):
-    image = Image.open(unprocessed_photo_folder+photo_name)  # Открытие изображения
-    draw = ImageDraw.Draw(image)
-    draw.rectangle((x, y, width, height), outline=(255, 0, 0), width=5)
+def draw_rectangles(photo_name: str, coordinates_list: list):
+    image = Image.open(unprocessed_photo_folder + photo_name)
+    font = ImageFont.truetype('./Font/Karla-VariableFont_wght.ttf', 60)
+    for coords in coordinates_list:
+        x, y, width, height, value, precision = coords
+        text = f"value: {value} \n precision: {round(precision, 3)}"
+        draw = ImageDraw.Draw(image)
+        draw.rectangle((x, y, width, height), outline=(255, 0, 0), width=5)
+        draw.text((x, y, width, height), text=text, fill=None, font=font, anchor=None, spacing=0, align="left")
+
     image.save(processed_photo_folder + photo_name)
+
     return processed_photo_folder + photo_name
