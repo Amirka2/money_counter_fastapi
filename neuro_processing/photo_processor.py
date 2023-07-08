@@ -1,6 +1,14 @@
 import onnxruntime as ort
 from PIL import Image, ImageDraw
 import numpy as np
+from PIL import ImageFont
+# from roboflow import Roboflow
+#
+#
+# rf = Roboflow(api_key="z1B73yP5LSQJhcOeuKL9")
+# project = rf.workspace().project("detect-money")
+# model = project.version(2).model
+
 # result.plot() - нарисовать квадраты
 
 
