@@ -1,8 +1,8 @@
 from typing import List, Optional
 
-from sqlalchemy import Column, Integer, String, Boolean, Float, JSON, create_engine, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, Float, create_engine, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, sessionmaker, Relationship
+from sqlalchemy.orm import relationship, sessionmaker
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./db/sql_app.db"
 engine = create_engine(
@@ -34,10 +34,11 @@ class User(Base):
     hash = Column(String, nullable=False)
     tokens_value = Column(Integer, default=10, nullable=False)
     is_admin = Column(String)
+    sum = Column(Float, default=0, nullable=False)
 
     photos = relationship("Photo", back_populates="owner")
     detected_photos = relationship("DetectedPhoto", back_populates="owner")
-    history = relationship("History", back_populates="owner")
+    messages = relationship("Messages", back_populates="owner")
 
 
 class Photo(Base):
@@ -66,12 +67,12 @@ class DetectedPhoto(Base):
     owner = relationship("User", back_populates="detected_photos")
 
 
-class History(Base):
-    __tablename__ = "histories"
+class Message(Base):
+    __tablename__ = "messages"
 
     id = Column(Integer, primary_key=True, index=True)
     owner_id = Column(Integer, ForeignKey("users.id"))
-    sum = Column(Float, default=0, nullable=False)
-    messages = Column(JSON, default={})
+    message_text = Column(String, default="", nullable=False)
+    message_sum = Column(Float, default=0, nullable=False)
 
-    owner = relationship("User", back_populates="history")
+    owner = relationship("User", back_populates="messages")
