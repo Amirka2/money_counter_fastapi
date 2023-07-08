@@ -128,8 +128,8 @@ def draw_rectangles(photo_name: str, coordinates_list: list):
         text = f"value: {value} \n precision: {round(precision, 3)}"
         draw = ImageDraw.Draw(image)
         cropped = image_copy.crop((x, y, width, height))
-        item_path = f"{temp_photo_folder}/{i}/{photo_name}"
-        cropped.save(item_path, ".JPG")
+        item_path = f"{temp_photo_folder}/{i}{photo_name}"
+        cropped.save(item_path)
         sum = classify_item(item_path)
         draw.rectangle((x, y, width, height), outline=(255, 0, 0), width=5)
         draw.text((x, y, width, height), text=text, fill=None, font=font, anchor=None, spacing=0, align="left")
