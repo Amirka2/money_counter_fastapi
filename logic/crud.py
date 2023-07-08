@@ -15,13 +15,17 @@ def get_user_by_username(db: Session, username: str):
     return db.query(models.User).filter(models.User.username == username).first()
 
 
-def get_user_history(db: Session, user_id: int):
-    return db.query(models.History).filter(models.History.owner_id == user_id).first()
+def get_user_messages(db: Session, user_id: int):
+    return db.query(models.Messages).filter(models.User.id == user_id).all()
 
 
-def update_user_history(db: Session, user_id: int, sum: float, message: str):
-    history = models.History()
-    db.query(models.History)
+def create_user_message(db: Session, msg: schemas.MessageCreate):
+    db_message = models.Message(**msg.dict())
+    db.add(db_message)
+    db.commit()
+    db.refresh(db_message)
+    return db_message
+
 
 def get_users(db: Session, skip: int = 0, limit: int = 10):
     return db.query(models.User).offset(skip).limit(limit).all()
