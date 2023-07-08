@@ -13,5 +13,9 @@ tags_metadata = [
     {
         "name": "Admin",
         "description": "Operations for admins",
+    },
+    {
+        "name": "History",
+        "description": "Operations with users history"
     }
 ]
