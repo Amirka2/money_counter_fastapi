@@ -34,7 +34,7 @@ def change_user_info(db: Session, user: schemas.User):
     return user
 
 
-def get_photos(db: Session, skip: int = 0, limit: int = 100):
+def get_photos(db: Session, user_id: int, skip: int = 0, limit: int = 100):
     return db.query(models.Photo).offset(skip).limit(limit).all()
 
 
