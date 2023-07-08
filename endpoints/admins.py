@@ -9,7 +9,7 @@ from logic import crud
 admin_router = APIRouter(prefix='/admin', tags=['Admin'])
 
 
-@admin_router.patch("/tokens/{user_id}", response_model=schemas.User)
+@admin_router.patch("/{user_id}/tokens/", response_model=schemas.User)
 def change_tokens_value(user_id: int, tokens_value: int, db: Session = Depends(get_db)):
     db_user = crud.get_user(db, user_id)
     user = db_user
@@ -19,7 +19,7 @@ def change_tokens_value(user_id: int, tokens_value: int, db: Session = Depends(g
     return crud.change_user_info(db, user)
 
 
-@admin_router.post("/", response_model=schemas.User)
+@admin_router.post("/{user_id}/", response_model=schemas.User)
 def make_admin(user_id: int, db: Session = Depends(get_db)):
     db_user = crud.get_user(db, user_id)
     user = db_user
