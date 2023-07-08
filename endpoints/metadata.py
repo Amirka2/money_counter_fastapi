@@ -5,7 +5,7 @@ tags_metadata = [
     },
     {
         "name": "Photos",
-        "description": "Operations with users.",
+        "description": "Operations with photos.",
     },
     {
         "name": "Login",
