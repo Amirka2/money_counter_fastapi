@@ -64,12 +64,22 @@ class User(BaseModel):
     class Config:
         orm_mode = True
 
+upgrad
+class HistoryBase(BaseModel):
+    owner_id: int
+    sum: float = 0
+    messages: list[str]
+
+
+class HistoryCreate(HistoryBase):
+    pass
+
 
 class History(BaseModel):
     id: int
     owner_id: int
     sum: float = 0
-    messages: Json = [Any]
+    messages: list[str]
 
     class Config:
         orm_mode = True
