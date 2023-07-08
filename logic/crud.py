@@ -35,11 +35,11 @@ def change_user_info(db: Session, user: schemas.User):
 
 
 def get_photos(db: Session, user_id: int, skip: int = 0, limit: int = 100):
-    return db.query(models.Photo).offset(skip).limit(limit).all()
+    return db.query(models.Photo).filter(models.Photo.owner_id == user_id).limit(100).all()
 
 
 def get_favorite_photos(db: Session, user_id: int, skip: int = 0, limit: int = 100):
-    return db.query(models.Photo).limit(limit).filter(models.Photo.owner_id == user_id).all()
+    return db.query(models.Photo).filter(models.Photo.owner_id == user_id).filter(models.Photo.is_favorite).limit(100).all()
 
 
 def create_user_photo(db: Session, photo: schemas.PhotoCreate, user_id: int):
