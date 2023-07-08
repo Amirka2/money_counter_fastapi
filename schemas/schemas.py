@@ -2,6 +2,25 @@ from typing import Optional, Any
 from pydantic import BaseModel, Json
 
 
+class History(BaseModel):
+    owner_id: int
+    sum: float = 0
+    messages: list[str]
+
+
+class MessageCreate(BaseModel):
+    owner_id: int
+    message_text: str
+    message_sum: float
+
+
+class Message(MessageCreate):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+
 class PhotoBase(BaseModel):
     name: str
     url: str
@@ -58,19 +77,10 @@ class User(BaseModel):
     hash: str
     tokens_value: int = 10
     is_admin: Optional[bool]
+    sum: float = 0
     photos: Optional[list[Photo]] = []
     detected_photos: Optional[list[Photo]] = []
+    messages: list[Message]
 
     class Config:
         orm_mode = True
-
-
-class History(BaseModel):
-    id: int
-    owner_id: int
-    sum: float = 0
-    messages: Json = [Any]
-
-    class Config:
-        orm_mode = True
-
