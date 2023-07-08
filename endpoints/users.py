@@ -1,13 +1,10 @@
-import datetime
+from fastapi import APIRouter, HTTPException, Depends
 
-from fastapi import APIRouter, HTTPException, Depends, UploadFile
-from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
 from db.models import get_db
 from schemas import schemas
 from logic import crud
-from neuro_processing.photo_processor import detect_objects_on_image, draw_rectangles
 
 
 users_router = APIRouter(prefix='/users', tags=['Users'])
@@ -35,21 +32,5 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 
 
-@users_router.post("/{user_id}/photos/", response_class=FileResponse)
-async def create_photo_for_user(
-    user_id: int, file: UploadFile, db: Session = Depends(get_db)
-):
-    if not file.content_type.__contains__('image'):
-        raise HTTPException(status_code=404, detail="Filetype is incorrect")
-    current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
-    file_name = f"{current_time}_{file.filename}"
-    file_path = f"photos/unprocessed/{file_name}"
-    with open(file_path, "wb") as f:
-        f.write(await file.read())
-    photo = schemas.PhotoCreate(name=file_name, url=file_path, is_favorite=False)
-    result_photo = crud.create_user_photo(db=db, photo=photo, user_id=user_id)
-    сoords_list = detect_objects_on_image(file_path)
-    if len(сoords_list) < 1:
-        return file_path
-    return draw_rectangles(file_name, сoords_list)
+
 
