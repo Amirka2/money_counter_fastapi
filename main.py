@@ -1,4 +1,5 @@
 import uvicorn
+import os
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
@@ -16,6 +17,13 @@ app.include_router(login_router)
 app.include_router(admin_router)
 app.include_router(history_router)
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
+
+photos_path = './photos'
+if not os.path.exists(photos_path):
+    os.mkdir(photos_path)
+    os.mkdir(photos_path + '/temp')
+    os.mkdir(photos_path + '/processed')
+    os.mkdir(photos_path + '/unprocessed')
 
 if __name__ == '__main__':
     uvicorn.run(
