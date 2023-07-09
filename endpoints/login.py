@@ -11,7 +11,7 @@ login_router = APIRouter(prefix='/login', tags=['Login'])
 
 
 @login_router.post("/")
-def log_in(user: schemas.User, db: Session = Depends(get_db)):
+def log_in(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_username(db, username=user.username)
     response = JSONResponse(content={"message": "куки установлены"})
     if db_user is None:

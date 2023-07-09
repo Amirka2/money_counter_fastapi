@@ -16,6 +16,9 @@ photos_router = APIRouter(prefix='/photos', tags=['Photos'])
 async def create_photo_for_user(
     user_id: int, file: UploadFile, db: Session = Depends(get_db)
 ):
+    user = crud.get_user(db, user_id)
+    user.tokens_value = user.tokens_value - 1
+    crud.change_user_info(db, user)
     if not file.content_type.__contains__('image'):
         raise HTTPException(status_code=404, detail="Filetype is incorrect")
     current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
