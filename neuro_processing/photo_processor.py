@@ -47,7 +47,7 @@ yolo_classes_sum = {
 
 
 def classify_item(item_path: str):
-    result = model_classifier(item_path, save=True)
+    result = model_classifier(item_path)
     probs = result[0].probs  # Class probabilities for classification outputs
     money_class = yolo_classes[probs.top1]
     probability = probs.top1conf.item()
