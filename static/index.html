@@ -13,8 +13,7 @@
 <div class="container">
     <header class="d-flex justify-content-center py-3">
         <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-login="m0neyc0untbot"
-                data-size="large" data-auth-url="https://money-dev.onrender.com/login"
-                data-request-access="write"></script>
+                data-size="large" data-onauth="onTelegramAuth(user)" data-request-access="write"></script>
     </header>
 </div>
 
@@ -45,39 +44,40 @@
     function onTelegramAuth(user) {
         alert('Logged in as ' + user.first_name + ' ' + user.last_name + '!');
         fetch('https://money-dev.onrender.com/login', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ "tg_id": user.id, "first_name": user.first_name,"last_name": user.last_name,
-                                "username": user.username, "hash": user.hash })
-            .then(response => response.json())
-            .then(response => console.log(JSON.stringify(response)))
-    })
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "tg_id": user.id, "first_name": user.first_name, "last_name": user.last_name,
+                "username": user.username, "hash": user.hash
+            })
+                .then(response => response.json())
+                .then(response => console.log(JSON.stringify(response)))
+        })
 
 
+        let tg_id;
+        let form = document.querySelector('.send-form')
+        let key, value, i;
+        let cookieArray = document.cookie.split(';');
 
-    let tg_id;
-    let form = document.querySelector('.send-form')
-    let key, value, i;
-    let cookieArray = document.cookie.split(';');
+        for (i = 0; i < cookieArray.length; i++) {
+            key = cookieArray[i].substr(0, cookieArray[i].indexOf("="));
+            value = cookieArray[i].substr(cookieArray[i].indexOf("=") + 1);
 
-    for (i = 0; i < cookieArray.length; i++) {
-        key = cookieArray[i].substr(0, cookieArray[i].indexOf("="));
-        value = cookieArray[i].substr(cookieArray[i].indexOf("=") + 1);
+            if (key == 'email') {
+                alert('Email is ' + value);
+            }
 
-        if (key == 'email') {
-            alert('Email is ' + value);
+            if (key == 'user_id') {
+                tg_id = value
+            }
         }
-
-        if (key == 'user_id') {
-            tg_id = value
-        }
-    }
-    console.log('/users/' + tg_id + '/photos/')
-    form.action = '/users/' + tg_id + '/photos/'
-    form.method = 'POST'
+        console.log('/users/' + tg_id + '/photos/')
+        form.action = '/users/' + tg_id + '/photos/'
+        form.method = 'POST'
 
 </script>
 <script>
