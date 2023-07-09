@@ -146,6 +146,7 @@ def work_with_items(photo_name: str, coordinates_list: list): # drawing and clas
     font = ImageFont.truetype('./Font/Karla-VariableFont_wght.ttf', 60)
     i = 0
     sum = 0
+    money_classes = []
     for coords in coordinates_list:
         image_copy = image.copy()
         x, y, width, height, value, precision = coords
@@ -155,12 +156,15 @@ def work_with_items(photo_name: str, coordinates_list: list): # drawing and clas
         cropped.save(item_path)
         money_class, prob = classify_item(item_path)
         sum += yolo_classes_sum[money_class]
+
         text = f"{money_class}\n{round(prob, 3)}"
         draw.rectangle((x, y, width, height), outline=(255, 0, 0), width=5)
         draw.text((x, y, width, height), text=text, fill=None, font=font, anchor=None, spacing=0, align="left")
+
+        money_classes.append(money_class)
         i += 1
 
     image.save(processed_photo_folder + photo_name)
 
-    return processed_photo_folder + photo_name
+    return processed_photo_folder + photo_name, sum, money_classes
 

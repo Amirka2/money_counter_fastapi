@@ -30,7 +30,12 @@ async def create_photo_for_user(
     сoords_list = detect_objects_on_image(file_path)
     if len(сoords_list) < 1:
         return file_path
-    return work_with_items(file_name, сoords_list)
+    processed_photo_path, message_sum, money_classes = work_with_items(file_name, сoords_list)
+    message = schemas.MessageCreate(owner_id=user_id,
+                                    message_text=f"{', '.join(money_classes)}",
+                                    message_sum=message_sum)
+    crud.create_user_message(db, user_id, message)
+    return processed_photo_path
 
 
 @photos_router.get("/{user_id}/", response_model=list[schemas.Photo])
