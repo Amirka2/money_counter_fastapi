@@ -6,7 +6,7 @@ import datetime
 from db.models import get_db
 from schemas import schemas
 from logic import crud
-from neuro_processing.photo_processor import detect_objects_on_image, draw_rectangles
+from neuro_processing.photo_processor import detect_objects_on_image, work_with_items
 from neuro_processing.photo_processor import processed_photo_folder, unprocessed_photo_folder
 
 
@@ -30,7 +30,7 @@ async def create_photo_for_user(
     сoords_list = detect_objects_on_image(file_path)
     if len(сoords_list) < 1:
         return file_path
-    return draw_rectangles(file_name, сoords_list)
+    return work_with_items(file_name, сoords_list)
 
 
 @photos_router.get("/{user_id}/", response_model=list[schemas.Photo])
