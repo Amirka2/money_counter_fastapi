@@ -6,7 +6,8 @@ import datetime
 from db.models import get_db
 from schemas import schemas
 from logic import crud
-from neuro_processing.photo_processor import detect_objects_on_image, draw_rectangles
+from neuro_processing.photo_processor import detect_objects_on_image, work_with_items
+from neuro_processing.photo_processor import processed_photo_folder, unprocessed_photo_folder
 
 
 photos_router = APIRouter(prefix='/photos', tags=['Photos'])
@@ -24,11 +25,12 @@ async def create_photo_for_user(
     with open(file_path, "wb") as f:
         f.write(await file.read())
     photo = schemas.PhotoCreate(name=file_name, url=file_path, is_favorite=False)
-    result_photo = crud.create_user_photo(db=db, photo=photo, user_id=user_id)
+    crud.create_user_photo(db=db, photo=photo, user_id=user_id)
+    file_path = unprocessed_photo_folder + file_name
     сoords_list = detect_objects_on_image(file_path)
     if len(сoords_list) < 1:
         return file_path
-    return draw_rectangles(file_name, сoords_list)
+    return work_with_items(file_name, сoords_list)
 
 
 @photos_router.get("/{user_id}/", response_model=list[schemas.Photo])
@@ -41,4 +43,3 @@ def read_photos(user_id: int, skip: int = 0, limit: int = 10, db: Session = Depe
 def read_photos(user_id: int, skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     fav_photos = crud.get_favorite_photos(db, user_id, skip=skip, limit=limit)
     return fav_photos
-

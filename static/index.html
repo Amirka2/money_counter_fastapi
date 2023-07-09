@@ -40,7 +40,7 @@
   <!-- Copyright -->
 </footer>
     <script>
-        let user_id;
+        let tg_id;
         let form = document.querySelector('.send-form')
         let key, value, i;
         let cookieArray  = document.cookie.split(';');
@@ -54,11 +54,11 @@
             }
 
             if (key == 'user_id'){
-                user_id = value
+                tg_id = value
             }
         }
-        console.log('/users/' + user_id + '/photos/')
-        form.action = '/users/' + user_id + '/photos/'
+        console.log('/users/' + tg_id + '/photos/')
+        form.action = '/users/' + tg_id + '/photos/'
         form.method = 'POST'
 
     </script>
