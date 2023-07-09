@@ -1,5 +1,4 @@
 import onnxruntime as ort
-import torch
 from PIL import Image, ImageDraw
 import numpy as np
 from PIL import ImageFont
@@ -11,8 +10,6 @@ from ultralytics import YOLO
 # rf = Roboflow(api_key="z1B73yP5LSQJhcOeuKL9")
 # project = rf.workspace().project("detect-money")
 # model = project.version(2).model
-
-# result.plot() - нарисовать квадраты
 
 
 model_detector = ort.InferenceSession("neuro_processing/detector.onnx")

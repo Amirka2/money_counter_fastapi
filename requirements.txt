@@ -63,7 +63,6 @@ pytz==2023.3
 PyYAML==5.4.1
 requests==2.31.0
 requests-toolbelt==1.0.0
-roboflow==1.1.0
 rsa==4.7.2
 ruamel.yaml==0.17.32
 ruamel.yaml.clib==0.2.7
