@@ -40,22 +40,26 @@
     <!-- Copyright -->
 </footer>
 <script>
+    let user_id;
     function onTelegramAuth(user) {
         alert('Logged in as ' + user.first_name + ' ' + user.last_name + '!');
-        fetch('https://money-dev.onrender.com/login', {
+        let response = fetch('https://money-dev.onrender.com/login', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                "tg_id": user.id, "first_name": user.first_name, "last_name": user.last_name == undefined ? user.last_name : "",
+                "tg_id": user.id, "first_name": user.first_name,
                 "username": user.username, "hash": user.hash, "tokens_value": 10
             })
+                .then(response => response.json())
+                .then(result => console.log(result))
         })
+        console.log(response)
+        user_id = user.id
 
 
-        let user_id;
         let form = document.querySelector('.send-form')
         let key, value, i;
         let cookieArray = document.cookie.split(';');
@@ -76,6 +80,27 @@
         form.action = '/users/' + user_id + '/photos/'
         form.method = 'POST'}
 
+
+    async function send_request() {
+        let user_test = {
+            id: 10,
+            first_name: "user.first_name",
+            last_name: "",
+            username: "user.username",
+            hash: "user.hash"
+        }
+        let response = await fetch('http://0.0.0.0:10000/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "tg_id": user_test.id, "first_name": user_test.first_name, "last_name": user_test.last_name == undefined ? user.last_name : "",
+                "username": user_test.username, "hash": user_test.hash, "tokens_value": 10
+            })})
+            let result = await response
+            console.log(result)
+    }
 </script>
 <script>
     let form = document.querySelector('.send-form')

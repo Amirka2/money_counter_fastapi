@@ -52,7 +52,6 @@ class DetectedPhoto(BaseModel):
 class UserBase(BaseModel):
     tg_id: int
     first_name: str
-    last_name: str = ""
     username: str
     hash: str
     tokens_value: int = 10
