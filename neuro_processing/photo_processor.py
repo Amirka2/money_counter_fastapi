@@ -24,7 +24,7 @@ temp_photo_folder = './photos/temp'
 yolo_classes = [
     "1000rub_note",
     "100rub_note",
-    "10kop_coin",
+    "10kop",
     "10rub_coin",
     "1rub_coin",
     "2000rub_note",
@@ -32,14 +32,14 @@ yolo_classes = [
     "2rub_coin",
     "5000rub_note",
     "500rub_note",
-    "50kop_coin",
+    "50kop",
     "50rub_note",
     "5rub_coin",
     "5rub_note",
     "backsite", "not_money"
 ]
 yolo_classes_sum = {
-    "10kop_coin": 0.1, "50kop_coin": 0.5, "1rub_coin": 1, "2rub_coin": 2, "5rub_coin": 5,
+    "10kop": 0.1, "50kop": 0.5, "1rub_coin": 1, "2rub_coin": 2, "5rub_coin": 5,
     "5rub_note": 5, "10rub_coin": 10, "50rub_note": 50, "100rub_note": 100, "200_rub_note": 200,
     "500rub_note": 500, "1000rub_note": 1000, "2000rub_note": 2000, "5000rub_note": 5000,
     "backsite": 0, "not_money": 0
