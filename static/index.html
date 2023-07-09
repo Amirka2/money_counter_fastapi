@@ -55,7 +55,7 @@
         })
 
 
-        let tg_id;
+        let user_id;
         let form = document.querySelector('.send-form')
         let key, value, i;
         let cookieArray = document.cookie.split(';');
@@ -69,11 +69,11 @@
             }
 
             if (key == 'user_id') {
-                tg_id = value
+                user_id = value
             }
         }
-        console.log('/users/' + tg_id + '/photos/')
-        form.action = '/users/' + tg_id + '/photos/'
+        console.log('/users/' + user_id + '/photos/')
+        form.action = '/users/' + user_id + '/photos/'
         form.method = 'POST'}
 
 </script>
