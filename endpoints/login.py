@@ -10,8 +10,9 @@ from logic import crud
 login_router = APIRouter(prefix='/login', tags=['Login'])
 
 
-@login_router.post("/")
-def log_in(user: schemas.UserCreate, db: Session = Depends(get_db)):
+@login_router.get("/")
+def log_in(tg_id: int, first_name: str, username: str, hash: str, db: Session = Depends(get_db)):
+    user = schemas.UserCreate(tg_id=tg_id, first_name=first_name, username=username, hash=hash)
     db_user = crud.get_user_by_username(db, username=user.username)
     response = JSONResponse(content={"message": "куки установлены"})
     if db_user is None:

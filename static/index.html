@@ -28,6 +28,7 @@
         <input class="btn btn-primary" type="submit" name="Upload" value="Upload"/>
     </form>
 
+    <button class="btn secondary" onclick="send_request()">CLICK</button>
 </div>
 
 <footer class="bg-light text-center text-lg-start fixed-bottom">
@@ -40,27 +41,23 @@
     <!-- Copyright -->
 </footer>
 <script>
-    let user_id = 1;
+    let user_id = 10;
 
-    function onTelegramAuth(user) {
+    async function onTelegramAuth(user) {
         alert('Logged in as ' + user.first_name + ' ' + user.last_name + '!');
-        let response = fetch('https://money-dev.onrender.com/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "tg_id": user.id, "first_name": user.first_name,
-                "username": user.username, "hash": user.hash, "tokens_value": 10
-            })
-        })
-                .then(response => response.json())
-                .then(result => console.log(result))
-        console.log(response)
+        async () => {
+            const response = await fetch('http://money-dev.onrender.com/login' + new URLSearchParams({
+                tg_id: 1,
+                first_name: user.first_name,
+                username: user.username,
+                hash: user.hash
+            }))
+
+            const data = await response.json()
+
+            console.log(data)
+        }
         user_id = user.id
-
-
     }
 
     let form = document.querySelector('.send-form')
@@ -91,22 +88,19 @@
             username: "user.username",
             hash: "user.hash"
         }
-        let response = await fetch('http://0.0.0.0:10000/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "tg_id": user_test.id,
-                "first_name": user_test.first_name,
-                "last_name": user_test.last_name == undefined ? user.last_name : "",
-                "username": user_test.username,
-                "hash": user_test.hash,
-                "tokens_value": 10
-            })
+        (async () => {
+            const response = await fetch('http://0.0.0.0:10000/login' + new URLSearchParams({
+                tg_id: 1,
+                first_name: user_test.first_name,
+                username: user_test.username,
+                hash: user_test.hash,
+                tokens_value: 10
+            }))
+
+            const data = await response.json()
+
+            console.log(data)
         })
-        let result = await response
-        console.log(result)
     }
 </script>
 <script>
