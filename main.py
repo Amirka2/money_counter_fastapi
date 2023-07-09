@@ -19,6 +19,9 @@ app.include_router(history_router)
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
 
 
+Base.metadata.create_all(bind=engine)
+
+
 if __name__ == '__main__':
     uvicorn.run(
         "main:app",
