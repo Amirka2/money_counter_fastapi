@@ -24,9 +24,7 @@
     </div>
 
     <form class="d-flex flex-column send-form"
-          enctype="multipart/form-data"
-          action="/users/1/photos/"
-          method="POST">
+          enctype="multipart/form-data">
         <input class="form-control my-image-field" type="FILE" name="file"/>
         <input class="btn btn-primary" type="submit" name="Upload" value="Upload" data-bs-toggle="modal" data-bs-target="#staticBackdrop"/>
     </form>
@@ -40,7 +38,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Дарова
+                    <img src="path/to/image.jpg" alt="detected photo"/>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -62,6 +60,7 @@
     <!-- Copyright -->
 </footer>
 <script>
+    let image_path = fetch('http://money-dev.onrender.com/photos/')
     let tg_id;
     let form = document.querySelector('.send-form')
     let key, value, i;
