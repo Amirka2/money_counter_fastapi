@@ -27,8 +27,6 @@
         <input class="form-control my-image-field" type="FILE" name="file"/>
         <input class="btn btn-primary" type="submit" name="Upload" value="Upload"/>
     </form>
-
-    <button class="btn secondary" onclick="send_request()">CLICK</button>
 </div>
 
 <footer class="bg-light text-center text-lg-start fixed-bottom">
@@ -79,29 +77,6 @@
     console.log('/users/' + user_id + '/photos/')
     form.action = '/photos/' + user_id + '/'
     form.method = 'POST'
-
-    async function send_request() {
-        let user_test = {
-            id: 10,
-            first_name: "user.first_name",
-            last_name: "",
-            username: "user.username",
-            hash: "user.hash"
-        }
-        const get = async (url, params) => {
-            const response = await fetch(url + '?' + new URLSearchParams(params))
-            const data = await response.json()
-
-            return data
-        }
-        get('http://0.0.0.0:10000/login/', {
-                tg_id: user_test.id,
-                first_name: user_test.first_name,
-                username: user_test.username,
-                hash: user_test.hash,
-        }).then(data => console.log(data))
-
-    }
 </script>
 <script>
     let form = document.querySelector('.send-form')
