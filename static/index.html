@@ -51,7 +51,7 @@
 
             return data
         }
-        get('https://money-dev.onrender.com/login', {
+        get('https://money-dev.onrender.com/login/', {
                 tg_id: 1,
                 first_name: user.first_name,
                 username: user.username,
@@ -94,12 +94,11 @@
 
             return data
         }
-        get('http://0.0.0.0:10000/login', {
+        get('http://0.0.0.0:10000/login/', {
                 tg_id: user_test.id,
                 first_name: user_test.first_name,
                 username: user_test.username,
                 hash: user_test.hash,
-                tokens_value: 10
         }).then(data => console.log(data))
 
     }
