@@ -17,6 +17,8 @@ async def create_photo_for_user(
     user_id: int, file: UploadFile, db: Session = Depends(get_db)
 ):
     user = crud.get_user(db, user_id)
+    if user.tokens_value <= 0:
+        raise HTTPException(status_code=404, detail="tokens are out")
     user.tokens_value = user.tokens_value - 1
     crud.change_user_info(db, user)
     if not file.content_type.__contains__('image'):
