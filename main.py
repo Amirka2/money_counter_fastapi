@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
+from db.models import Base, engine
 from endpoints.metadata import tags_metadata
 from endpoints.users import users_router
 from endpoints.photos import photos_router
@@ -16,6 +17,7 @@ app.include_router(login_router)
 app.include_router(admin_router)
 app.include_router(history_router)
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
+
 
 if __name__ == '__main__':
     uvicorn.run(
