@@ -1,7 +1,10 @@
 import onnxruntime as ort
+import torch
 from PIL import Image, ImageDraw
 import numpy as np
 from PIL import ImageFont
+from ultralytics import YOLO
+
 # from roboflow import Roboflow
 #
 #
@@ -13,22 +16,28 @@ from PIL import ImageFont
 
 
 model_detector = ort.InferenceSession("neuro_processing/detector.onnx")
-model_classifier = ort.InferenceSession("neuro_processing/detector.onnx")
+model_classifier = YOLO("neuro_processing/classifier.pt")
 unprocessed_photo_folder = './photos/unprocessed/'
 processed_photo_folder = './photos/processed/'
 temp_photo_folder = './photos/temp'
 
 yolo_classes = [
     "10kop_coin", "50kop_coin", "1rub_coin", "2rub_coin", "5rub_coin",
-    "5rub_note", "10rub_coin", "50rub_note", "100rub_note",
+    "5rub_note", "10rub_coin", "50rub_note", "100rub_note", "200_rub_note"
     "500rub_note", "1000rub_note", "2000rub_note", "5000rub_note",
     "backsite", "not_money"
 ]
 
 
 def classify_item(item_path: str):
-    res = model_classifier.predict(item_path)
-    return sum
+    result = model_classifier(item_path, save=True)
+    # detect_objects_on_image()
+    boxes = result[0].boxes  # Boxes object for bbox outputs
+    masks = result[0].masks  # Masks object for segmentation masks outputs
+    keypoints = result[0].keypoints  # Keypoints object for pose outputs
+    probs = result[0].probs  # Class probabilities for classification outputs
+
+    return result
 
 
 def detect_objects_on_image(buf):
@@ -130,7 +139,7 @@ def draw_rectangles(photo_name: str, coordinates_list: list):
         cropped = image_copy.crop((x, y, width, height))
         item_path = f"{temp_photo_folder}/{i}{photo_name}"
         cropped.save(item_path)
-        sum = classify_item(item_path)
+        item_result = classify_item(item_path)
         draw.rectangle((x, y, width, height), outline=(255, 0, 0), width=5)
         draw.text((x, y, width, height), text=text, fill=None, font=font, anchor=None, spacing=0, align="left")
         i += 1
