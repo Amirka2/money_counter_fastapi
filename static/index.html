@@ -5,66 +5,88 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <title>moneyCountSite</title>
 </head>
 <body>
-    <div class="container">
-        <header class="d-flex justify-content-center py-3">
-            <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-login="m0neyc0untbot" data-size="large" data-auth-url="https://money-counter.onrender.com/login" data-request-access="write"></script>
-        </header>
+<div class="container">
+    <header class="d-flex justify-content-center py-3">
+        <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-login="m0neyc0untbot"
+                data-size="large" data-auth-url="https://money-counter.onrender.com/login"
+                data-request-access="write"></script>
+    </header>
+</div>
+
+<div class="d-flex flex-column justify-content-around align-items-center">
+    <div>
+        <h1>Главная</h1>
     </div>
 
-    <div class="d-flex flex-column justify-content-around align-items-center">
-        <div>
-            <h1>Главная</h1>
+    <form class="d-flex flex-column send-form"
+          enctype="multipart/form-data"
+          action="/users/1/photos/"
+          method="POST">
+        <input class="form-control my-image-field" type="FILE" name="file"/>
+        <input class="btn btn-primary" type="submit" name="Upload" value="Upload" data-bs-toggle="modal" data-bs-target="#staticBackdrop"/>
+    </form>
+
+    <div class="modal fade modal-xl" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Дарова
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Understood</button>
+                </div>
+            </div>
         </div>
-
-        <form class="d-flex flex-column send-form"
-            enctype="multipart/form-data"
-            action="/users/1/photos/"
-            method="POST">
-            <input class="form-control my-image-field" type="FILE" name="file"/>
-            <input class="btn btn-primary" type="submit" name="Upload" value="Upload" />
-        </form>
-
     </div>
 
-    <footer class="bg-light text-center text-lg-start fixed-bottom">
-  <!-- Copyright -->
-  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-    © 2023 Copyright: Money Counter
-      <br/>
-      Практика
-  </div>
-  <!-- Copyright -->
+</div>
+
+<footer class="bg-light text-center text-lg-start fixed-bottom">
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        © 2023 Copyright: Money Counter
+        <br/>
+        Практика
+    </div>
+    <!-- Copyright -->
 </footer>
-    <script>
-        let tg_id;
-        let form = document.querySelector('.send-form')
-        let key, value, i;
-        let cookieArray  = document.cookie.split(';');
+<script>
+    let tg_id;
+    let form = document.querySelector('.send-form')
+    let key, value, i;
+    let cookieArray = document.cookie.split(';');
 
-        for (i = 0; i < cookieArray.length; i++){
-            key = cookieArray[i].substr(0, cookieArray[i].indexOf("="));
-            value = cookieArray[i].substr(cookieArray[i].indexOf("=")+1);
+    for (i = 0; i < cookieArray.length; i++) {
+        key = cookieArray[i].substr(0, cookieArray[i].indexOf("="));
+        value = cookieArray[i].substr(cookieArray[i].indexOf("=") + 1);
 
-            if (key == 'email'){
-                alert('Email is ' + value);
-            }
-
-            if (key == 'user_id'){
-                tg_id = value
-            }
+        if (key == 'email') {
+            alert('Email is ' + value);
         }
-        console.log('/users/' + tg_id + '/photos/')
-        form.action = '/users/' + tg_id + '/photos/'
-        form.method = 'POST'
 
-    </script>
+        if (key == 'user_id') {
+            tg_id = value
+        }
+    }
+    console.log('/users/' + tg_id + '/photos/')
+    form.action = '/users/' + tg_id + '/photos/'
+    form.method = 'POST'
+
+</script>
 <script>
     let form = document.querySelector('.send-form')
-    const compressImage = async (file, { quality = 1, type = file.type }) => {
+    const compressImage = async (file, {quality = 1, type = file.type}) => {
         // Get as image data
         const imageBitmap = await createImageBitmap(file);
 
@@ -90,7 +112,7 @@
     const input = document.querySelector('.my-image-field');
     input.addEventListener('change', async (e) => {
         // Get the files
-        const { files } = e.target;
+        const {files} = e.target;
 
         // No files selected
         if (!files.length) return;
