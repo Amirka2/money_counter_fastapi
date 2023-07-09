@@ -40,7 +40,8 @@
     <!-- Copyright -->
 </footer>
 <script>
-    let user_id;
+    let user_id = 1;
+
     function onTelegramAuth(user) {
         alert('Logged in as ' + user.first_name + ' ' + user.last_name + '!');
         let response = fetch('https://money-dev.onrender.com/login', {
@@ -76,10 +77,11 @@
                 user_id = value
             }
         }
-        console.log('/users/' + user_id + '/photos/')
-        form.action = '/users/' + user_id + '/photos/'
-        form.method = 'POST'}
+    }
 
+    console.log('/users/' + user_id + '/photos/')
+    form.action = '/users/' + user_id + '/photos/'
+    form.method = 'POST'
 
     async function send_request() {
         let user_test = {
@@ -95,11 +97,16 @@
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                "tg_id": user_test.id, "first_name": user_test.first_name, "last_name": user_test.last_name == undefined ? user.last_name : "",
-                "username": user_test.username, "hash": user_test.hash, "tokens_value": 10
-            })})
-            let result = await response
-            console.log(result)
+                "tg_id": user_test.id,
+                "first_name": user_test.first_name,
+                "last_name": user_test.last_name == undefined ? user.last_name : "",
+                "username": user_test.username,
+                "hash": user_test.hash,
+                "tokens_value": 10
+            })
+        })
+        let result = await response
+        console.log(result)
     }
 </script>
 <script>
