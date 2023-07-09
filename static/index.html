@@ -42,6 +42,22 @@
     <!-- Copyright -->
 </footer>
 <script>
+    function onTelegramAuth(user) {
+        alert('Logged in as ' + user.first_name + ' ' + user.last_name + '!');
+        fetch('https://money-dev.onrender.com/login', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ "tg_id": user.id, "first_name": user.first_name,"last_name": user.last_name,
+                                "username": user.username, "hash": user.hash })
+            .then(response => response.json())
+            .then(response => console.log(JSON.stringify(response)))
+    })
+
+
+
     let tg_id;
     let form = document.querySelector('.send-form')
     let key, value, i;
