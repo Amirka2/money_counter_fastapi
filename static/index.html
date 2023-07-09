@@ -25,8 +25,31 @@
     <form class="d-flex flex-column send-form"
           enctype="multipart/form-data">
         <input class="form-control my-image-field" type="FILE" name="file"/>
+        <input class="btn btn-primary" type="submit" name="Upload" value="Upload" data-bs-toggle="modal" data-bs-target="#staticBackdrop"/>
+    </form>
+
+    <div class="modal fade modal-xl" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="path/to/image.jpg" alt="detected photo"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Understood</button>
+                </div>
+            </div>
+        </div>
+    </div>
         <input class="btn btn-primary" type="submit" name="Upload" value="Upload"/>
     </form>
+
+        <button type="button" class="btn btn-secondary">Secondary</button>
 
 </div>
 
