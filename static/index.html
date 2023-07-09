@@ -45,18 +45,18 @@
 
     async function onTelegramAuth(user) {
         alert('Logged in as ' + user.first_name + ' ' + user.last_name + '!');
-        async () => {
-            const response = await fetch('http://money-dev.onrender.com/login' + new URLSearchParams({
+        const get = async (url, params) => {
+            const response = await fetch(url + '?' + new URLSearchParams(params))
+            const data = await response.json()
+
+            return data
+        }
+        get('https://money-dev.onrender.com/login', {
                 tg_id: 1,
                 first_name: user.first_name,
                 username: user.username,
                 hash: user.hash
-            }))
-
-            const data = await response.json()
-
-            console.log(data)
-        }
+        }).then(data => console.log(data))
         user_id = user.id
     }
 
@@ -88,19 +88,20 @@
             username: "user.username",
             hash: "user.hash"
         }
-        (async () => {
-            const response = await fetch('http://0.0.0.0:10000/login' + new URLSearchParams({
-                tg_id: 1,
+        const get = async (url, params) => {
+            const response = await fetch(url + '?' + new URLSearchParams(params))
+            const data = await response.json()
+
+            return data
+        }
+        get('http://0.0.0.0:10000/login', {
+                tg_id: user_test.id,
                 first_name: user_test.first_name,
                 username: user_test.username,
                 hash: user_test.hash,
                 tokens_value: 10
-            }))
+        }).then(data => console.log(data))
 
-            const data = await response.json()
-
-            console.log(data)
-        })
     }
 </script>
 <script>
