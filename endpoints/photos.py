@@ -40,6 +40,10 @@ async def create_photo_for_user(
                                     message_text=f"{', '.join(money_classes)}",
                                     message_sum=message_sum)
     crud.create_user_message(db, user_id, message)
+
+    user.sum = user.sum + message_sum
+    crud.change_user_info(db, user)
+
     return processed_photo_path
 
 
