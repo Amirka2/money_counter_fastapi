@@ -17,16 +17,21 @@
     </header>
 </div>
 
-<div class="d-flex flex-column justify-content-around align-items-center">
+<div class="d-flex flex-column justify-content-around align-items-center"
+     id="root">
     <div>
         <h1>Главная</h1>
     </div>
 
     <form class="d-flex flex-column send-form"
+          id="myform"
           enctype="multipart/form-data">
         <input class="form-control my-image-field" type="FILE" name="file"/>
         <input class="btn btn-primary" type="submit" name="Upload" value="Upload"/>
     </form>
+
+    <div class="result">
+    </div>
 </div>
 
 <footer class="bg-light text-center text-lg-start fixed-bottom">
@@ -41,6 +46,46 @@
 <script>
     let user_id = 10;
 
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("myform").addEventListener("submit", function (e) {
+            e.preventDefault(); // avoid to execute the actual submit of the form
+
+            let xhr = new XMLHttpRequest(); // create XMLHttpRequest object
+            xhr.open("POST", "/photos/" + user_id + "/", false); // set the request type and URL
+            xhr.setRequestHeader("enctype", "multipart/form-data"); // set the request header
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                    var contentType = xhr.getResponseHeader("Content-Type");
+                    // create an <img> element
+                    let div = document.createElement("div")
+                    div.className = "result"
+                    let imgElement = document.createElement("img");
+                    imgElement.src = "http://0.0.0.0/photos/".concat(xhr.response.slice(1, xhr.response.length - 1)); // assuming the response is the photo URL
+                    imgElement.style.border = '1px solid blue';
+                    imgElement.style.padding = '10px';
+                    imgElement.style.marginTop = '20px';
+                    imgElement.style.background = '#f0f0f0';
+                    imgElement.style.width = "640px";
+                    let btn = document.createElement("button")
+                    btn.onclick = (e) => {
+                        let container = e.target.parentNode;
+                        container.parentNode.removeChild(container);
+                        document.getElementById("root").appendChild(div)
+                    }
+                    btn.textContent = "Close";
+                    // append the <img> element to the result div
+                    document.getElementById("result").appendChild(imgElement);
+                    document.getElementById("result").appendChild(btn);
+
+                }
+            };
+
+            xhr.send(new FormData(document.getElementById("myform"))); // send the serialized form data
+        });
+    });
+
+
     async function onTelegramAuth(user) {
         alert('Logged in as ' + user.first_name + ' ' + user.last_name + '!');
         const get = async (url, params) => {
@@ -50,10 +95,10 @@
             return data
         }
         get('https://money-dev.onrender.com/login/', {
-                tg_id: 1,
-                first_name: user.first_name,
-                username: user.username,
-                hash: user.hash
+            tg_id: 1,
+            first_name: user.first_name,
+            username: user.username,
+            hash: user.hash
         }).then(data => console.log(data))
         user_id = user.id
     }
@@ -75,8 +120,7 @@
         }
     }
     console.log('/users/' + user_id + '/photos/')
-    form.action = '/photos/' + user_id + '/'
-    form.method = 'POST'
+
 </script>
 <script>
     let form = document.querySelector('.send-form')

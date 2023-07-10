@@ -163,5 +163,5 @@ def work_with_items(photo_name: str, coordinates_list: list): # drawing and clas
 
     image.save(processed_photo_folder + photo_name)
 
-    return processed_photo_folder + photo_name, sum, money_classes
+    return photo_name, sum, money_classes
 

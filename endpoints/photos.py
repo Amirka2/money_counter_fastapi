@@ -13,13 +13,13 @@ from neuro_processing.photo_processor import processed_photo_folder, unprocessed
 photos_router = APIRouter(prefix='/photos', tags=['Photos'])
 
 
-@photos_router.post("/{user_id}/", response_class=FileResponse)
+@photos_router.post("/{user_id}/")
 async def create_photo_for_user(
     user_id: int, file: UploadFile, db: Session = Depends(get_db)
 ):
     if not file.content_type.__contains__('image'):
         raise HTTPException(status_code=404, detail="Filetype is incorrect")
-    current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H_%M_%S")
     file_name = f"{current_time}_{file.filename}"
     file_path = f"photos/unprocessed/{file_name}"
     with open(file_path, "wb") as f:
@@ -48,3 +48,8 @@ def read_photos(user_id: int, skip: int = 0, limit: int = 10, db: Session = Depe
 def read_photos(user_id: int, skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     fav_photos = crud.get_favorite_photos(db, user_id, skip=skip, limit=limit)
     return fav_photos
+
+
+@photos_router.get("/{photo_name}", response_class=FileResponse)
+def read_photos(photo_name: str):
+    return "./photos/processed/" + photo_name
