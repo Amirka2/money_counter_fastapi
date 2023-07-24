@@ -28,12 +28,12 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     tg_id = Column(Integer, nullable=False)
-    first_name = Column(String, nullable=False)
-    last_name = Column(String, nullable=False)
+    first_name = Column(String)
+    last_name = Column(String, default="")
     username = Column(String, nullable=False)
     hash = Column(String, nullable=False)
     tokens_value = Column(Integer, default=10, nullable=False)
-    is_admin = Column(String)
+    is_admin = Column(Boolean, nullable=False, default=False)
     sum = Column(Float, default=0)
 
     photos = relationship("Photo", back_populates="owner")
@@ -48,7 +48,7 @@ class Photo(Base):
     name = Column(String, unique=True, nullable=False)
     url = Column(String, unique=True, nullable=False)
     is_detection_correct = Column(Boolean)
-    is_favorite = Column(Boolean)
+    is_favorite = Column(Boolean, default=False, nullable=False)
     owner_id = Column(Integer, ForeignKey("users.id"))
 
     owner = relationship("User", back_populates="photos")
@@ -61,7 +61,7 @@ class DetectedPhoto(Base):
     name = Column(String, unique=True, nullable=False)
     url = Column(String, unique=True, nullable=False)
     is_detection_correct = Column(Boolean)
-    is_favorite = Column(Boolean)
+    is_favorite = Column(Boolean, default=False, nullable=False)
     owner_id = Column(Integer, ForeignKey("users.id"))
 
     owner = relationship("User", back_populates="detected_photos")

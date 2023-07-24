@@ -2,16 +2,10 @@ from typing import Optional, Any
 from pydantic import BaseModel, Json
 
 
-class History(BaseModel):
-    owner_id: int
-    sum: float = 0
-    messages: list[str]
-
-
 class MessageCreate(BaseModel):
     owner_id: int
-    message_text: str
-    message_sum: float
+    message_text: str = ""
+    message_sum: float = 0
 
 
 class Message(MessageCreate):
@@ -24,7 +18,7 @@ class Message(MessageCreate):
 class PhotoBase(BaseModel):
     name: str
     url: str
-    is_favorite: bool
+    is_favorite: bool = False
 
 
 class PhotoCreate(PhotoBase):
@@ -37,7 +31,7 @@ class Photo(BaseModel):
     name: str
     url: str
     is_detection_correct: Optional[bool]
-    is_favorite: bool
+    is_favorite: bool = False
 
     class Config:
         orm_mode = True
@@ -49,7 +43,7 @@ class DetectedPhoto(BaseModel):
     name: str
     url: str
     is_detection_correct: Optional[bool]
-    is_favorite: bool
+    is_favorite: bool = False
 
     class Config:
         orm_mode = True
@@ -58,7 +52,6 @@ class DetectedPhoto(BaseModel):
 class UserBase(BaseModel):
     tg_id: int
     first_name: str
-    last_name: str
     username: str
     hash: str
     tokens_value: int = 10
@@ -72,15 +65,15 @@ class User(BaseModel):
     id: int
     tg_id: int
     first_name: str
-    last_name: str
+    last_name: str = ""
     username: str
     hash: str
     tokens_value: int = 10
-    is_admin: Optional[bool]
+    is_admin: bool = False
     sum: float = 0
     photos: Optional[list[Photo]] = []
     detected_photos: Optional[list[Photo]] = []
-    messages: list[Message]
+    messages: list[Message] = []
 
     class Config:
         orm_mode = True

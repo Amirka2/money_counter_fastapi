@@ -16,10 +16,10 @@ def get_user_by_username(db: Session, username: str):
 
 
 def get_user_messages(db: Session, user_id: int):
-    return db.query(models.Messages).filter(models.User.id == user_id).all()
+    return db.query(models.Message).filter(models.Message.owner_id == user_id).all()
 
 
-def create_user_message(db: Session, msg: schemas.MessageCreate):
+def create_user_message(db: Session, owner_id: int, msg: schemas.MessageCreate):
     db_message = models.Message(**msg.dict())
     db.add(db_message)
     db.commit()
